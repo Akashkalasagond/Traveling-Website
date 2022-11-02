@@ -1,0 +1,105 @@
+<?php
+error_reporting(0);
+
+$msg = "";
+
+// If upload button is clicked ...
+if (isset($_POST['upload'])) {
+
+	$filename = $_FILES["uploadfile"]["name"];
+	$tempname = $_FILES["uploadfile"]["tmp_name"];
+	$folder = "./image/" . $filename;
+
+	$db = mysqli_connect("localhost", "root", "", "geeksforgeeks");
+
+	// Get all the submitted data from the form
+	$sql = "INSERT INTO image (filename) VALUES ('$filename')";
+
+	// Execute query
+	mysqli_query($db, $sql);
+
+	// Now let's move the uploaded image into the folder: image
+	if (move_uploaded_file($tempname, $folder)) {
+		echo "<h3> Image uploaded successfully!</h3>";
+	} else {
+		echo "<h3> Failed to upload image!</h3>";
+	}
+}
+?>
+
+<!doctype html>
+<html>
+
+<head>
+	<title>Travel the world with cheap and affordable prices</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="book .css">
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>	
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<img class="logo"src="ansh.png" alt="" >	
+	
+</head>
+<body background="Homebkg.jpg">
+<br>
+	<div class="navbar" id='nav'>
+       <ul>
+       	  <li><a style="text-decoration:none; color:white;" href="home page.html">Home</li>
+       	  <li><a style="text-decoration:none; color:white;" href="tours.html">Tours</li>
+       	  <li>Bookings</li>
+       	  <li>About</li>
+       </ul>
+	 </div>
+	
+	<div class="select" id='nav'>
+       <ul>
+       	  <li><a style="text-decoration:none; color:white;" href="tours.html">Book a Tour</a></li>
+       	  <li>Booking Stats</li>
+       	  <li>Cancel a Tour</li>
+       </ul>
+	 </div>
+	 <br><br>
+	 
+	<form style="text-align:center;">
+	Hover mouse over tours to check Tour ID<br>
+  <label for="fname" style="color:black;">Tour ID</label>
+  <input type="text" id="fname" name="fname" value="0001"><br> 
+  
+  <label for="fname" style="color:black;">Price &nbsp; &nbsp;&nbsp;</label>
+  <input type="text" id="fname" name="fname" value="$200"> <br>
+  <div id="content">
+        <form method="POST" action="" enctype="multipart/form-data">
+            <div class="form-group">
+                <input class="form-control" type="file" name="uploadfile" value="" />
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit" name="upload">UPLOAD</button>
+            </div>
+        </form>
+    </div>
+    <div id="display-image">
+    <?php
+        $query = " select * from image ";
+        $result = mysqli_query($db, $query);
+ 
+        while ($data = mysqli_fetch_assoc($result)) {
+    ?>
+        <img src="./image/<?php echo $data['filename']; ?>">
+ 
+    <?php
+        }
+    ?>
+    </div>
+  <button type="button" class="btn btn">Book Tickets</button><br><br>
+</form>
+  
+	
+</body>
+<footer>
+<p>
+	Project By- AKASH KALASAGOND
+</footer>
+</html>
